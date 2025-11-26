@@ -9,7 +9,7 @@ CREATE TABLE products(
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
-    barcode VARCHAR(20) UNIQUE,
+    bar_code VARCHAR(20) UNIQUE,
     sku VARCHAR(50),
     cost_price DECIMAL(19, 2),
     sale_price DECIMAL(19, 2),
