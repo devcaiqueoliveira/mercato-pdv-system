@@ -26,4 +26,20 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(status).body(err);
     }
+
+    @ExceptionHandler(BusinessRuleException.class)
+    public ResponseEntity<StandardError> handleBusinessRule(BusinessRuleException e, HttpServletRequest request) {
+
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        StandardError err = new StandardError(
+                Instant.now(),
+                status.value(),
+                "Regra de negócio quebrada.",
+                e.getMessage(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(status).body(err);
+    }
 }

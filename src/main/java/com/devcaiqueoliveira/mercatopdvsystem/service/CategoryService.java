@@ -1,6 +1,8 @@
 package com.devcaiqueoliveira.mercatopdvsystem.service;
 
 import com.devcaiqueoliveira.mercatopdvsystem.entity.Category;
+import com.devcaiqueoliveira.mercatopdvsystem.exception.BusinessRuleException;
+import com.devcaiqueoliveira.mercatopdvsystem.exception.EntityNotFoundException;
 import com.devcaiqueoliveira.mercatopdvsystem.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,7 @@ public class CategoryService {
 
     public Category findById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Categoria não encontrada com ID: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada com ID: " + id));
     }
 
     public List<Category> listAll() {
@@ -28,7 +30,7 @@ public class CategoryService {
     public Category save(Category category) {
         Category existingCategory = repository.findByName(category.getName());
         if (existingCategory != null && !existingCategory.getId().equals(category.getId())) {
-            throw new RuntimeException("Categoria com o nome " + category.getName() + " já existe.");
+            throw new BusinessRuleException("Categoria com o nome " + category.getName() + " já existe.");
         }
         return repository.save(category);
     }
@@ -36,7 +38,7 @@ public class CategoryService {
     @Transactional
     public void deleteById(Long id) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException("Categoria não encontrada para ser removida");
+            throw new EntityNotFoundException("Categoria não encontrada para ser removida");
         }
         repository.deleteById(id);
     }
