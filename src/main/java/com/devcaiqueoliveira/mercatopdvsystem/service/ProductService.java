@@ -2,6 +2,7 @@ package com.devcaiqueoliveira.mercatopdvsystem.service;
 
 import com.devcaiqueoliveira.mercatopdvsystem.entity.Category;
 import com.devcaiqueoliveira.mercatopdvsystem.entity.Product;
+import com.devcaiqueoliveira.mercatopdvsystem.exception.BusinessRuleException;
 import com.devcaiqueoliveira.mercatopdvsystem.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,21 +31,16 @@ public class ProductService {
     @Transactional
     public Product save(Product product) {
 
-        Optional<Product> existingProductOpt = repository.findByBarCode(product.getBarCode());
+        product.setActive(true);
 
-        if (existingProductOpt.isPresent()) {
-            Product existingProduct = existingProductOpt.get();
-
-            if (!existingProduct.getId().equals(product.getId())) {
-                throw new RuntimeException("Já existe um outro produto com este código de barras");
-            }
-        }
-        if (product.getCategory() != null && product.getCategory().getId() != null) {
-            Category validCategory = categoryService.findById(product.getCategory().getId());
-            product.setCategory(validCategory);
+        if (repository.existsByBarCode(product.getBarCode())) {
+            throw new BusinessRuleException("Já existe um produto com este código de barras cadastrado.");
         }
 
-        return repository.save(product);
+        Category category = categoryService.findById(product.getCategory().getId());
+        product.setCategory(category);
+
+        return  repository.save(product);
     }
 
     @Transactional
