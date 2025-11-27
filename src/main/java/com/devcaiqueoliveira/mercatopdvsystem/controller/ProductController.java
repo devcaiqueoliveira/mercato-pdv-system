@@ -1,10 +1,12 @@
 package com.devcaiqueoliveira.mercatopdvsystem.controller;
 
+import com.devcaiqueoliveira.mercatopdvsystem.controller.dto.ProductRequest;
 import com.devcaiqueoliveira.mercatopdvsystem.controller.dto.ProductResponse;
 import com.devcaiqueoliveira.mercatopdvsystem.entity.Product;
 import com.devcaiqueoliveira.mercatopdvsystem.mapper.CategoryMapper;
 import com.devcaiqueoliveira.mercatopdvsystem.mapper.ProductMapper;
 import com.devcaiqueoliveira.mercatopdvsystem.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +39,11 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        Product savedProduct = service.create(product);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
+    public ResponseEntity<ProductResponse> createProduct(@RequestBody @Valid ProductRequest request) {
+        Product product = ProductMapper.toEntity(request);
+
+        Product savedProduct = service.create(product, request.categoryId());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(ProductMapper.toProductResponse(savedProduct));
     }
 }

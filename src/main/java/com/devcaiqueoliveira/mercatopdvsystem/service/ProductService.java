@@ -30,13 +30,13 @@ public class ProductService {
     }
 
     @Transactional
-    public Product create(Product product) {
+    public Product create(Product product, Long categoryId) {
 
         validateUniqueBarCode(product.getBarCode());
 
         product.setActive(true);
 
-        Category category = categoryService.findById(product.getCategory().getId());
+        Category category = categoryService.findById(categoryId);
         product.setCategory(category);
 
         return repository.save(product);
