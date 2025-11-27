@@ -1,7 +1,9 @@
 package com.devcaiqueoliveira.mercatopdvsystem.controller;
 
+import com.devcaiqueoliveira.mercatopdvsystem.controller.dto.ProductResponse;
 import com.devcaiqueoliveira.mercatopdvsystem.entity.Product;
 import com.devcaiqueoliveira.mercatopdvsystem.mapper.CategoryMapper;
+import com.devcaiqueoliveira.mercatopdvsystem.mapper.ProductMapper;
 import com.devcaiqueoliveira.mercatopdvsystem.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,13 +20,20 @@ public class ProductController {
     private final ProductService service;
 
     @GetMapping
-    public ResponseEntity<List<Product>> listAllProducts() {
-        return ResponseEntity.ok(service.listAll());
+    public ResponseEntity<List<ProductResponse>> listAllProducts() {
+        List<Product> products = service.listAll();
+
+        List<ProductResponse> responses = products.stream()
+                .map(ProductMapper::toProductResponse)
+                .toList();
+
+        return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.findById(id));
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable Long id) {
+        Product product = service.findById(id);
+        return ResponseEntity.ok(ProductMapper.toProductResponse(product));
     }
 
     @PostMapping
