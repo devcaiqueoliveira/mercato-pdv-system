@@ -45,10 +45,10 @@ public class CategoryService {
 
     @Transactional
     public Category update(Long id, Category newData) {
-        Category currentCategory = findById(id);
+        Category existingCategory = findById(id);
         validateUniqueNameForUpdate(newData.getName(), id);
-        updateData(currentCategory, newData);
-        return repository.save(currentCategory);
+        existingCategory.updateFrom(newData);
+        return repository.save(existingCategory);
     }
 
     private void validateUniqueName(String name) {
@@ -61,11 +61,6 @@ public class CategoryService {
         if (repository.existsByNameAndIdNot(name, id)) {
             throw new BusinessRuleException("Uma categoria com este nome já pertence a outro registro.");
         }
-    }
-
-    private void updateData(Category existing, Category newData) {
-        existing.setName(newData.getName());
-        existing.setDescription(newData.getDescription());
     }
 
 }

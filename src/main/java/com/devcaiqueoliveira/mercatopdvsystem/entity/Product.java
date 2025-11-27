@@ -69,4 +69,16 @@ public class Product {
         updatedAt = LocalDateTime.now();
     }
 
+    public void updateFrom(Product newData) {
+        this.name = newData.getName();
+        this.description = newData.getDescription();
+        this.barCode = newData.getBarCode();
+        this.sku = newData.getSku();
+        this.costPrice = newData.getCostPrice();
+        this.salePrice = newData.getSalePrice();
+        this.stockQuantity = newData.getStockQuantity();
+        this.unitOfMeasure = newData.getUnitOfMeasure();
+        this.ncmCode = newData.getNcmCode();
+    }
+
 }

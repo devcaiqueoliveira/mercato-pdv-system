@@ -30,7 +30,7 @@ public class ProductService {
     }
 
     @Transactional
-    public Product save(Product product) {
+    public Product create(Product product) {
 
         product.setActive(true);
 
@@ -45,17 +45,19 @@ public class ProductService {
     }
 
     @Transactional
-    public Product update(Product product) {
-        Optional<Product> existingProductOpt = repository.findByBarCode(product.getBarCode());
+    public Product update(Long id, Product newData, Long categoryId) {
+        Product existingProduct = findById(newData.getId());
 
-        if (existingProductOpt.isPresent()) {
-            Product existingProduct = existingProductOpt.get();
-            if (!existingProduct.getId().equals(product.getId())) {
-                throw new BusinessRuleException("Este código de barras ja pertence a outro produto.");
-            }
+        validateUniqueBarCodeForUpdate(newData.getBarCode(), id);
+
+        existingProduct.updateFrom(newData);
+
+        if (categoryId != null) {
+            Category newCategory = categoryService.findById(categoryId);
+            existingProduct.setCategory(newCategory);
         }
 
-        return  repository.save(product);
+        return repository.save(existingProduct);
     }
 
     @Transactional
@@ -64,5 +66,17 @@ public class ProductService {
             throw new EntityNotFoundException("Produto não encontrado no sistema.");
         }
         repository.deleteById(id);
+    }
+
+    private void validateUniqueBarCode(String barCode) {
+        if (repository.existsByBarCode(barCode)) {
+            throw new BusinessRuleException("Já existe um produto cadastrado com este código de barras");
+        }
+    }
+
+    private void validateUniqueBarCodeForUpdate(String barCode, Long id) {
+        if (repository.existsByBarCodeAndIdNot(barCode, id)) {
+            throw new BusinessRuleException("O código de barras declarado já pertence a outro produto.");
+        }
     }
 }
