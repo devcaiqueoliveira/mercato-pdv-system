@@ -33,7 +33,6 @@ public record ProductRequest(
 
         String ncmCode,
 
-        @NotNull(message = "É obrigatório escolher uma categoria")
         Long categoryId
 ) {
 }
