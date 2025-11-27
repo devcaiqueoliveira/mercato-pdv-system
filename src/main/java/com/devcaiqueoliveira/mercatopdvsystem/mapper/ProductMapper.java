@@ -20,7 +20,6 @@ public final class ProductMapper {
                 .stockQuantity(request.stockQuantity())
                 .unitOfMeasure(request.unitOfMeasure())
                 .ncmCode(request.ncmCode())
-                .active(true)
                 .build();
 
 

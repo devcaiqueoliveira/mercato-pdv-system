@@ -12,7 +12,6 @@ public final class CategoryMapper {
         return Category.builder()
                 .name(request.name())
                 .description(request.description())
-                .active(true)
                 .build();
     }
 

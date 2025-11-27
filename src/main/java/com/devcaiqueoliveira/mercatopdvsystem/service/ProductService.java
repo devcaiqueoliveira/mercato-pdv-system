@@ -40,6 +40,20 @@ public class ProductService {
         Category category = categoryService.findById(product.getCategory().getId());
         product.setCategory(category);
 
+        return repository.save(product);
+    }
+
+    @Transactional
+    public Product update(Product product) {
+        Optional<Product> existingProductOpt = repository.findByBarCode(product.getBarCode());
+
+        if (existingProductOpt.isPresent()) {
+            Product existingProduct = existingProductOpt.get();
+            if (!existingProduct.getId().equals(product.getId())) {
+                throw new BusinessRuleException("Este código de barras ja pertence a outro produto.");
+            }
+        }
+
         return  repository.save(product);
     }
 

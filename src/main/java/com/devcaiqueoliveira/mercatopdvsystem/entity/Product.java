@@ -25,7 +25,7 @@ public class Product {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "bar_code",  unique = true, length = 20)
+    @Column(name = "bar_code", unique = true, length = 20)
     private String barCode;
 
     private String sku;

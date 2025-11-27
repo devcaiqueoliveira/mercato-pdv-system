@@ -28,10 +28,17 @@ public class CategoryService {
 
     @Transactional
     public Category save(Category category) {
+
         Category existingCategory = repository.findByName(category.getName());
-        if (existingCategory != null && !existingCategory.getId().equals(category.getId())) {
-            throw new BusinessRuleException("Categoria com o nome " + category.getName() + " já existe.");
+
+        if (existingCategory != null && existingCategory.getId().equals(category.getId())) {
+            throw new BusinessRuleException("Já existe uma categoria com este nome.");
         }
+
+        if (category.getId() == null) {
+            category.setActive(true);
+        }
+
         return repository.save(category);
     }
 
