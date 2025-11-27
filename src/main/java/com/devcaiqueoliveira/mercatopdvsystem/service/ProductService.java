@@ -3,6 +3,7 @@ package com.devcaiqueoliveira.mercatopdvsystem.service;
 import com.devcaiqueoliveira.mercatopdvsystem.entity.Category;
 import com.devcaiqueoliveira.mercatopdvsystem.entity.Product;
 import com.devcaiqueoliveira.mercatopdvsystem.exception.BusinessRuleException;
+import com.devcaiqueoliveira.mercatopdvsystem.exception.EntityNotFoundException;
 import com.devcaiqueoliveira.mercatopdvsystem.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class ProductService {
 
     public Product findById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto com o ID: " + id + " não encontrado."));
+                .orElseThrow(() -> new EntityNotFoundException("Produto com o ID: " + id + " não encontrado."));
     }
 
     public List<Product> listAll() {
@@ -60,7 +61,7 @@ public class ProductService {
     @Transactional
     public void deleteById(Long id) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException("Produto não encontrado no sistema.");
+            throw new EntityNotFoundException("Produto não encontrado no sistema.");
         }
         repository.deleteById(id);
     }

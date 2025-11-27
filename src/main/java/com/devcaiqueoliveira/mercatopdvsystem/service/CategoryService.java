@@ -27,10 +27,11 @@ public class CategoryService {
     }
 
     @Transactional
-    public Category save(Category category) {
+    public Category create(Category category) {
+
         validateUniqueName(category.getName());
-        category.setId(null);
         category.setActive(true);
+
         return repository.save(category);
     }
 
@@ -42,10 +43,29 @@ public class CategoryService {
         repository.deleteById(id);
     }
 
+    @Transactional
+    public Category update(Long id, Category newData) {
+        Category currentCategory = findById(id);
+        validateUniqueNameForUpdate(newData.getName(), id);
+        updateData(currentCategory, newData);
+        return repository.save(currentCategory);
+    }
+
     private void validateUniqueName(String name) {
         if (repository.existsByName(name)) {
             throw new BusinessRuleException("Já existe uma categoria com este nome.");
         }
+    }
+
+    private void validateUniqueNameForUpdate(String name, Long id) {
+        if (repository.existsByNameAndIdNot(name, id)) {
+            throw new BusinessRuleException("Uma categoria com este nome já pertence a outro registro.");
+        }
+    }
+
+    private void updateData(Category existing, Category newData) {
+        existing.setName(newData.getName());
+        existing.setDescription(newData.getDescription());
     }
 
 }
