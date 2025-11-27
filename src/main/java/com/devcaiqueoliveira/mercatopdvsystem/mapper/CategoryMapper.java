@@ -1,10 +1,12 @@
-package com.devcaiqueoliveira.mercatopdvsystem.controller.mapper;
+package com.devcaiqueoliveira.mercatopdvsystem.mapper;
 
 import com.devcaiqueoliveira.mercatopdvsystem.controller.dto.CategoryRequest;
 import com.devcaiqueoliveira.mercatopdvsystem.controller.dto.CategoryResponse;
 import com.devcaiqueoliveira.mercatopdvsystem.entity.Category;
+import lombok.experimental.UtilityClass;
 
-public class CategoryMapper {
+@UtilityClass
+public final class CategoryMapper {
 
     public static Category toCategory(CategoryRequest request) {
         return Category.builder()

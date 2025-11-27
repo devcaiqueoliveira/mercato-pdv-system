@@ -2,7 +2,7 @@ package com.devcaiqueoliveira.mercatopdvsystem.controller;
 
 import com.devcaiqueoliveira.mercatopdvsystem.controller.dto.CategoryRequest;
 import com.devcaiqueoliveira.mercatopdvsystem.controller.dto.CategoryResponse;
-import com.devcaiqueoliveira.mercatopdvsystem.controller.mapper.CategoryMapper;
+import com.devcaiqueoliveira.mercatopdvsystem.mapper.CategoryMapper;
 import com.devcaiqueoliveira.mercatopdvsystem.entity.Category;
 import com.devcaiqueoliveira.mercatopdvsystem.service.CategoryService;
 import jakarta.validation.Valid;

@@ -1,6 +1,7 @@
 package com.devcaiqueoliveira.mercatopdvsystem.controller;
 
 import com.devcaiqueoliveira.mercatopdvsystem.entity.Product;
+import com.devcaiqueoliveira.mercatopdvsystem.mapper.CategoryMapper;
 import com.devcaiqueoliveira.mercatopdvsystem.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
