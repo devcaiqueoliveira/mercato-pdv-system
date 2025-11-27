@@ -1,5 +1,7 @@
 package com.devcaiqueoliveira.mercatopdvsystem.controller;
 
+import com.devcaiqueoliveira.mercatopdvsystem.controller.dto.CategoryResponse;
+import com.devcaiqueoliveira.mercatopdvsystem.controller.mapper.CategoryMapper;
 import com.devcaiqueoliveira.mercatopdvsystem.entity.Category;
 import com.devcaiqueoliveira.mercatopdvsystem.service.CategoryService;
 import lombok.AllArgsConstructor;
@@ -17,8 +19,14 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<Category>> getAllCategories() {
-        return ResponseEntity.ok(categoryService.listAll());
+    public ResponseEntity<List<CategoryResponse>> getAllCategories() {
+        List<Category> categories = categoryService.listAll();
+
+        List<CategoryResponse> responses = categories.stream()
+                .map(CategoryMapper::toCategoryResponse)
+                .toList();
+
+        return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/{id}")
