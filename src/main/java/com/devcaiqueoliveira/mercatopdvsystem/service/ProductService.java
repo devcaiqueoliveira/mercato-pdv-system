@@ -32,11 +32,9 @@ public class ProductService {
     @Transactional
     public Product create(Product product) {
 
-        product.setActive(true);
+        validateUniqueBarCode(product.getBarCode());
 
-        if (repository.existsByBarCode(product.getBarCode())) {
-            throw new BusinessRuleException("Já existe um produto com este código de barras cadastrado.");
-        }
+        product.setActive(true);
 
         Category category = categoryService.findById(product.getCategory().getId());
         product.setCategory(category);
