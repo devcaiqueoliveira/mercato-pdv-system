@@ -5,6 +5,8 @@ import com.devcaiqueoliveira.mercatopdvsystem.controller.dto.CategoryResponse;
 import com.devcaiqueoliveira.mercatopdvsystem.mapper.CategoryMapper;
 import com.devcaiqueoliveira.mercatopdvsystem.entity.Category;
 import com.devcaiqueoliveira.mercatopdvsystem.service.CategoryService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,10 +18,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/categories")
 @AllArgsConstructor
+@Tag(name = "Categorias", description = "Gestão de departamentos.")
 public class CategoryController {
 
     private final CategoryService categoryService;
 
+    @Operation(summary = "Lista todas as categorias cadastradas no sistema.")
     @GetMapping
     public ResponseEntity<List<CategoryResponse>> getAllCategories() {
         List<Category> categories = categoryService.listAll();
@@ -31,12 +35,14 @@ public class CategoryController {
         return ResponseEntity.ok(responses);
     }
 
+    @Operation(summary = "Encontra uma categoria associada a um ID.")
     @GetMapping("/{id}")
     public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Long id) {
         Category category = categoryService.findById(id);
         return ResponseEntity.ok(CategoryMapper.toCategoryResponse(category));
     }
 
+    @Operation(summary = "Cria uma nova categoria.")
     @PostMapping
     public ResponseEntity<CategoryResponse> createCategory(@RequestBody @Valid CategoryRequest request) {
         Category category = CategoryMapper.toCategory(request);
@@ -44,6 +50,7 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(CategoryMapper.toCategoryResponse(savedCategory));
     }
 
+    @Operation(summary = "Remove uma categoria existente.")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategoryById(@PathVariable Long id) {
         categoryService.deleteById(id);
