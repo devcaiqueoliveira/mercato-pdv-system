@@ -6,6 +6,7 @@ import com.devcaiqueoliveira.mercatopdvsystem.entity.Product;
 
 public final class ProductMapper {
 
+
     public static Product toEntity(ProductRequest request) {
 
         return Product.builder()

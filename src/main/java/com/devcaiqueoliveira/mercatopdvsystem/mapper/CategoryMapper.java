@@ -3,24 +3,15 @@ package com.devcaiqueoliveira.mercatopdvsystem.mapper;
 import com.devcaiqueoliveira.mercatopdvsystem.controller.dto.CategoryRequest;
 import com.devcaiqueoliveira.mercatopdvsystem.controller.dto.CategoryResponse;
 import com.devcaiqueoliveira.mercatopdvsystem.entity.Category;
-import lombok.experimental.UtilityClass;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@UtilityClass
-public final class CategoryMapper {
+@Mapper(componentModel = "spring")
+public interface CategoryMapper {
 
-    public static Category toCategory(CategoryRequest request) {
-        return Category.builder()
-                .name(request.name())
-                .description(request.description())
-                .build();
-    }
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "active", ignore = true)
+    Category toCategory(CategoryRequest categoryRequest);
 
-    public static CategoryResponse toCategoryResponse(Category entity) {
-        return new CategoryResponse(
-                entity.getId(),
-                entity.getName(),
-                entity.getDescription(),
-                entity.getActive()
-        );
-    }
+    CategoryResponse toCategoryResponse(Category category);
 }

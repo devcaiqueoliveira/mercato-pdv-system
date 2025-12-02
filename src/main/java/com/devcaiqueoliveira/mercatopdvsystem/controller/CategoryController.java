@@ -22,6 +22,7 @@ import java.util.List;
 public class CategoryController {
 
     private final CategoryService categoryService;
+    private final CategoryMapper categoryMapper;
 
     @Operation(summary = "Lista todas as categorias cadastradas no sistema.")
     @GetMapping
@@ -29,7 +30,7 @@ public class CategoryController {
         List<Category> categories = categoryService.listAll();
 
         List<CategoryResponse> responses = categories.stream()
-                .map(CategoryMapper::toCategoryResponse)
+                .map(categoryMapper::toCategoryResponse)
                 .toList();
 
         return ResponseEntity.ok(responses);
@@ -39,15 +40,15 @@ public class CategoryController {
     @GetMapping("/{id}")
     public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Long id) {
         Category category = categoryService.findById(id);
-        return ResponseEntity.ok(CategoryMapper.toCategoryResponse(category));
+        return ResponseEntity.ok(categoryMapper.toCategoryResponse(category));
     }
 
     @Operation(summary = "Cria uma nova categoria.")
     @PostMapping
     public ResponseEntity<CategoryResponse> createCategory(@RequestBody @Valid CategoryRequest request) {
-        Category category = CategoryMapper.toCategory(request);
+        Category category = categoryMapper.toCategory(request);
         Category savedCategory = categoryService.create(category);
-        return ResponseEntity.status(HttpStatus.CREATED).body(CategoryMapper.toCategoryResponse(savedCategory));
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryMapper.toCategoryResponse(savedCategory));
     }
 
     @Operation(summary = "Remove uma categoria existente.")
