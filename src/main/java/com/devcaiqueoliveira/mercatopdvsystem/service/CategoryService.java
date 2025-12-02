@@ -4,6 +4,7 @@ import com.devcaiqueoliveira.mercatopdvsystem.entity.Category;
 import com.devcaiqueoliveira.mercatopdvsystem.exception.BusinessRuleException;
 import com.devcaiqueoliveira.mercatopdvsystem.exception.EntityNotFoundException;
 import com.devcaiqueoliveira.mercatopdvsystem.repository.CategoryRepository;
+import com.devcaiqueoliveira.mercatopdvsystem.service.validator.category.CategoryValidatorStrategy;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import java.util.List;
 public class CategoryService {
 
     private final CategoryRepository repository;
+    private final List<CategoryValidatorStrategy> validators;
 
     public Category findById(Long id) {
         return repository.findById(id)
@@ -29,7 +31,8 @@ public class CategoryService {
     @Transactional
     public Category create(Category category) {
 
-        validateUniqueName(category.getName());
+        validators.forEach(v -> v.validationCreate(category));
+
         category.setActive(true);
 
         return repository.save(category);
@@ -46,21 +49,12 @@ public class CategoryService {
     @Transactional
     public Category update(Long id, Category newData) {
         Category existingCategory = findById(id);
-        validateUniqueNameForUpdate(newData.getName(), id);
+
+        validators.forEach(v -> v.validationUpdate(newData, id));
+
         existingCategory.updateFrom(newData);
+
         return repository.save(existingCategory);
-    }
-
-    private void validateUniqueName(String name) {
-        if (repository.existsByName(name)) {
-            throw new BusinessRuleException("Já existe uma categoria com este nome.");
-        }
-    }
-
-    private void validateUniqueNameForUpdate(String name, Long id) {
-        if (repository.existsByNameAndIdNot(name, id)) {
-            throw new BusinessRuleException("Uma categoria com este nome já pertence a outro registro.");
-        }
     }
 
 }

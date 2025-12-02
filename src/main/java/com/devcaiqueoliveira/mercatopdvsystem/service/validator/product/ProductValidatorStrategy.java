@@ -1,4 +1,4 @@
-package com.devcaiqueoliveira.mercatopdvsystem.service.validator;
+package com.devcaiqueoliveira.mercatopdvsystem.service.validator.product;
 
 import com.devcaiqueoliveira.mercatopdvsystem.entity.Product;
 

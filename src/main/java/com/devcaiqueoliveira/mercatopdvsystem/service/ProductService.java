@@ -4,7 +4,7 @@ import com.devcaiqueoliveira.mercatopdvsystem.entity.Category;
 import com.devcaiqueoliveira.mercatopdvsystem.entity.Product;
 import com.devcaiqueoliveira.mercatopdvsystem.exception.EntityNotFoundException;
 import com.devcaiqueoliveira.mercatopdvsystem.repository.ProductRepository;
-import com.devcaiqueoliveira.mercatopdvsystem.service.validator.ProductValidatorStrategy;
+import com.devcaiqueoliveira.mercatopdvsystem.service.validator.product.ProductValidatorStrategy;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
