@@ -10,7 +10,6 @@ import org.mapstruct.Mapping;
 public interface CategoryMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "active", ignore = true)
     Category toCategory(CategoryRequest categoryRequest);
 
     CategoryResponse toCategoryResponse(Category category);

@@ -33,7 +33,9 @@ public class CategoryService {
 
         validators.forEach(v -> v.validationCreate(category));
 
-        category.setActive(true);
+        if (category.getActive() == null) {
+            category.setActive(true);
+        }
 
         return repository.save(category);
     }

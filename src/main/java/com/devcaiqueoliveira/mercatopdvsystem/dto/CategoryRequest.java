@@ -6,7 +6,9 @@ public record CategoryRequest(
         @NotBlank(message = "O nome da categoria é obrigatório")
         String name,
 
-        String description
+        String description,
+
+        Boolean active
 
 ) {
 }
