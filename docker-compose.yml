@@ -3,7 +3,7 @@ version: '3.8'
 services:
   postgres:
     image: postgres:17
-    container_name: mercatopdv-database
+    container_name: mercatoapi-database
     ports:
       - "${DB_PORT}:5432"
     environment:

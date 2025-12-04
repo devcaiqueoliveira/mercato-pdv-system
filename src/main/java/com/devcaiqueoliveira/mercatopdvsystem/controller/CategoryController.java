@@ -52,6 +52,16 @@ public class CategoryController {
                 .body(categoryMapper.toCategoryResponse(savedCategory));
     }
 
+    @Operation(summary = "Atualiza uma categoria existente.")
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Long id, @RequestBody @Valid CategoryRequest request) {
+        Category newData = categoryMapper.toCategory(request);
+
+        Category updatedCategory = categoryService.update(id, newData);
+
+        return ResponseEntity.ok(categoryMapper.toCategoryResponse(updatedCategory));
+    }
+
     @Operation(summary = "Remove uma categoria existente.")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategoryById(@PathVariable Long id) {
